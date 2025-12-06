@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Metrology Equipment Catalogue - Multiple Versions</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #f9f9f9;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    section.catalogue-section {
+      margin-bottom: 60px;
+      padding: 20px 0;
+      background: #fff;
+    }
+    section.catalogue-section h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #0073e6;
+    }
+    /* Common styles for grids and cards */
+    .grid {
+      display: grid;
+      gap: 20px;
+    }
+    /* Section 1: 4 columns */
+    #equipmentGridS1 {
+      grid-template-columns: repeat(4, 1fr);
+    }
+    /* Section 2: 4 columns */
+    #equipmentGridS2 {
+      grid-template-columns: repeat(4, 1fr);
+    }
+    /* Section 3: 3 columns */
+    #equipmentGridS3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    @media (max-width: 960px) {
+      #equipmentGridS1,
+      #equipmentGridS2 {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      #equipmentGridS3 {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (max-width: 480px) {
+      #equipmentGridS1,
+      #equipmentGridS2,
+      #equipmentGridS3 {
+        grid-template-columns: 1fr;
+      }
+    }
+    .card {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
+      overflow: hidden;
+      transition: box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      user-select: none;
+      padding-bottom: 12px;
+      cursor: pointer;
+    }
+    .card:hover {
+      box-shadow: 0 6px 16px rgb(0 0 0 / 0.2);
+    }
+    .card img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      border-bottom: 1px solid #ddd;
+      background: #e0e0e0;
+      loading: lazy;
+    }
+    .card-name {
+      padding: 12px 8px 8px 8px;
+      font-weight: bold;
+      font-size: 18px;
+      color: #0073e6;
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    /* Buttons for sections 2 and 3 */
+    .card-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding: 0 10px;
+    }
+    .card-buttons button {
+      background-color: #0073e6;
+      border: none;
+      color: white;
+      padding: 8px 10px;
+      border-radius: 4px;
+      font-size: 14px;
+      cursor: pointer;
+      user-select: none;
+      flex: 1 1 30%;
+      min-width: 90px;
+      transition: background-color 0.3s ease;
+    }
+    .card-buttons button:hover {
+      background-color: #005bb5;
+    }
+    /* Controls for section 1 */
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      gap: 10px;
+      align-items: center;
+    }
+    .toggle-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .toggle-group label {
+      cursor: pointer;
+      user-select: none;
+      padding: 6px 12px;
+      border: 1px solid #0073e6;
+      border-radius: 4px;
+      background: #fff;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      font-size: 14px;
+    }
+    .toggle-group input[type="checkbox"] {
+      display: none;
+    }
+    .toggle-group input[type="checkbox"]:checked + label {
+      background: #0073e6;
+      color: #fff;
+    }
+    /* Controls for sections 2 and 3 */
+    .filter-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .filter-buttons button {
+      padding: 8px 18px;
+      font-size: 16px;
+      border: 2px solid #0073e6;
+      background: #fff;
+      color: #0073e6;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      user-select: none;
+    }
+    .filter-buttons button.active,
+    .filter-buttons button:hover {
+      background-color: #0073e6;
+      color: white;
+    }
+    /* Description panels */
+    .description-panel {
+      margin-top: 30px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
+      padding: 20px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      min-height: 120px;
+    }
+    .description-panel h2 {
+      margin-top: 0;
+    }
+    .no-selection {
+      text-align: center;
+      color: #666;
+      font-style: italic;
+      line-height: 120px;
+    }
+
+    /* Modern Search Bar Styles */
+    .search-container {
+      position: relative;
+      width: 100%;
+      max-width: 400px;
+      margin: 0 auto 20px auto;
+    }
+    .search-container input[type="search"] {
+      width: 100%;
+      padding: 12px 44px 12px 16px;
+      font-size: 16px;
+      border: 2px solid #0073e6;
+      border-radius: 30px;
+      outline-offset: 2px;
+      transition: border-color 0.3s ease;
+      box-shadow: inset 0 2px 4px rgb(0 0 0 / 0.1);
+    }
+    .search-container input[type="search"]:focus {
+      border-color: #005bb5;
+      box-shadow: 0 0 8px #005bb5;
+    }
+    .search-container svg {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+      pointer-events: none;
+      stroke: #0073e6;
+      stroke-width: 2;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Equipment Catalogue</h1>
+
+  <section class="catalogue-section" aria-label="Metrology Equipment Catalogue - Version 3">
+    <h2>Version 1: 3 Items Per Row, Filter Buttons & Action Buttons</h2>
+
+    <div class="search-container">
+      <input type="search" id="searchInputS3" placeholder="Search equipment..." aria-label="Search equipment" autocomplete="off" />
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <circle cx="11" cy="11" r="7"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+    </div>
+
+    <div class="filter-buttons" role="group" aria-label="Filter equipment by category">
+      <button class="active" data-filter="All">All</button>
+      <button data-filter="CMM">CMM</button>
+      <button data-filter="Calipers">Calipers</button>
+      <button data-filter="Micrometers">Micrometers</button>
+      <button data-filter="Gauge Blocks">Gauge Blocks</button>
+      <button data-filter="Surface Plates">Surface Plates</button>
+      <button data-filter="Optical">Optical Instruments</button>
+    </div>
+
+    <div id="equipmentGridS3" class="grid" aria-live="polite" aria-atomic="true"></div>
+
+  </section>
+
+  <section class="catalogue-section" aria-label="Metrology Equipment Catalogue - Version 2">
+    <h2>Version 2:Filter Buttons & Action Buttons</h2>
+
+    <div class="search-container">
+      <input type="search" id="searchInputS2" placeholder="Search equipment..." aria-label="Search equipment" autocomplete="off" />
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <circle cx="11" cy="11" r="7"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+    </div>
+
+    <div class="filter-buttons" role="group" aria-label="Filter equipment by category">
+      <button class="active" data-filter="All">All</button>
+      <button data-filter="CMM">CMM</button>
+      <button data-filter="Calipers">Calipers</button>
+      <button data-filter="Micrometers">Micrometers</button>
+      <button data-filter="Gauge Blocks">Gauge Blocks</button>
+      <button data-filter="Surface Plates">Surface Plates</button>
+      <button data-filter="Optical">Optical Instruments</button>
+    </div>
+
+    <div id="equipmentGridS2" class="grid" aria-live="polite" aria-atomic="true"></div>
+
+  </section>
+
+  <section class="catalogue-section" aria-label="Metrology Equipment Catalogue - Version 1">
+    <h2>Version 3: Toggle Filters</h2>
+
+    <div class="search-container">
+      <input type="search" id="searchInputS1" placeholder="Search equipment..." aria-label="Search equipment" autocomplete="off" />
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <circle cx="11" cy="11" r="7"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+    </div>
+
+    <div class="controls" aria-label="Search and filter controls">
+      <div class="toggle-group" role="group" aria-label="Filter by equipment category">
+        <input type="checkbox" id="filterCMMS1" checked />
+        <label for="filterCMMS1">CMM</label>
+        <input type="checkbox" id="filterCalipersS1" checked />
+        <label for="filterCalipersS1">Calipers</label>
+        <input type="checkbox" id="filterMicrometersS1" checked />
+        <label for="filterMicrometersS1">Micrometers</label>
+        <input type="checkbox" id="filterGaugeBlocksS1" checked />
+        <label for="filterGaugeBlocksS1">Gauge Blocks</label>
+        <input type="checkbox" id="filterSurfacePlatesS1" checked />
+        <label for="filterSurfacePlatesS1">Surface Plates</label>
+        <input type="checkbox" id="filterOpticalS1" checked />
+        <label for="filterOpticalS1">Optical Instruments</label>
+      </div>
+    </div>
+
+    <div id="equipmentGridS1" class="grid" aria-live="polite" aria-atomic="true"></div>
+
+    <section id="descriptionPanelS1" class="description-panel" aria-live="polite" aria-atomic="true" tabindex="0">
+      <p class="no-selection">Select an equipment to view its description here.</p>
+    </section>
+  </section>
+
+  <script>
+    // Shared equipment data
+    const equipmentData = [
+      {
+        id: "eq1",
+        name: "Coordinate Measuring Machine (CMM)",
+        category: "CMM",
+        imageUrl: "https://cdn.pixabay.com/photo/2017/08/02/01/28/machine-2568653_1280.jpg",
+        description:
+          "A device for measuring the physical geometrical characteristics of an object with high precision.",
+      },
+      {
+        id: "eq2",
+        name: "Vernier Calipers",
+        category: "Calipers",
+        imageUrl: "https://cdn.pixabay.com/photo/2016/03/27/18/00/vernier-caliper-1283817_1280.jpg",
+        description:
+          "A precision instrument used to measure internal and external dimensions in millimeters or inches.",
+      },
+      {
+        id: "eq3",
+        name: "Digital Micrometer",
+        category: "Micrometers",
+        imageUrl: "https://cdn.pixabay.com/photo/2017/03/05/21/38/micrometer-2122838_1280.jpg",
+        description:
+          "A micrometer with a digital display used for extremely precise measurement of small distances.",
+      },
+      {
+        id: "eq4",
+        name: "Gauge Blocks",
+        category: "Gauge Blocks",
+        imageUrl: "https://cdn.pixabay.com/photo/2017/01/06/19/15/gauge-blocks-1959371_1280.jpg",
+        description:
+          "Precision ground and lapped measuring standards used to calibrate measuring equipment.",
+      },
+      {
+        id: "eq5",
+        name: "Height Gauge",
+        category: "CMM",
+        imageUrl: "https://cdn.pixabay.com/photo/2017/08/10/05/13/measuring-instrument-2617381_1280.jpg",
+        description:
+          "Used for measuring vertical dimensions and marking out workpieces.",
+      },
+      {
+        id: "eq6",
+        name: "Dial Calipers",
+        category: "Calipers",
+        imageUrl: "https://cdn.pixabay.com/photo/2016/06/15/17/17/dial-caliper-1459887_1280.jpg",
+        description:
+          "Calipers with a dial indicator for precise measurements.",
+      },
+      {
+        id: "eq7",
+        name: "Outside Micrometer",
+        category: "Micrometers",
+        imageUrl: "https://cdn.pixabay.com/photo/2017/02/21/23/56/micrometer-2086211_1280.jpg",
+        description:
+          "Used to measure the outside dimensions of an object with high accuracy.",
+      },
+      {
+        id: "eq8",
+        name: "Slip Gauge Set",
+        category: "Gauge Blocks",
+        imageUrl: "https://cdn.pixabay.com/photo/2016/11/21/15/38/metal-1845536_1280.jpg",
+        description:
+          "A set of precision ground blocks used as length standards.",
+      },
+      {
+        id: "eq9",
+        name: "Granite Surface Plate",
+        category: "Surface Plates",
+        imageUrl: "https://cdn.pixabay.com/photo/2015/07/16/11/27/granite-846577_1280.jpg",
+        description:
+          "A flat reference surface used as the foundation for precision inspection and tooling setup.",
+      },
+      {
+        id: "eq10",
+        name: "Optical Comparator",
+        category: "Optical",
+        imageUrl: "https://cdn.pixabay.com/photo/2019/07/10/11/46/optical-4312302_1280.jpg",
+        description:
+          "An optical device used to compare a part to its drawing by magnifying the part's profile.",
+      },
+      {
+        id: "eq11",
+        name: "Dial Indicator",
+        category: "Optical",
+        imageUrl: "https://cdn.pixabay.com/photo/2016/11/29/03/53/dial-gauge-1869187_1280.jpg",
+        description:
+          "A precision instrument used to measure small linear distances and variations in height.",
+      },
+      {
+        id: "eq12",
+        name: "Precision Surface Plate",
+        category: "Surface Plates",
+        imageUrl: "https://cdn.pixabay.com/photo/2015/08/06/00/07/metal-877735_1280.jpg",
+        description:
+          "Used as a baseline for inspection, layout, and tooling in the metrology lab.",
+      }
+    ];
+
+    // Version 3 - 3 items per row, 3 buttons per row with button count depending on row index
+    const gridS3 = document.getElementById("equipmentGridS3");
+    const searchInputS3 = document.getElementById("searchInputS3");
+    const filterButtonsS3 = document.querySelectorAll("section[aria-label='Metrology Equipment Catalogue - Version 3'] .filter-buttons button");
+
+    let selectedEquipmentIdS3 = null;
+    let currentFilterS3 = "All";
+
+    function filterAndRenderS3() {
+      const searchTerm = searchInputS3.value.trim().toLowerCase();
+      let filtered = equipmentData.filter(eq => {
+        const matchesSearch = eq.name.toLowerCase().includes(searchTerm);
+        const matchesCategory = currentFilterS3 === "All" || eq.category === currentFilterS3;
+        return matchesSearch && matchesCategory;
+      });
+
+      filtered.sort((a, b) => a.name.localeCompare(b.name));
+
+      gridS3.innerHTML = "";
+
+      if (filtered.length === 0) {
+        gridS3.innerHTML = "<p>No equipment found.</p>";
+        selectedEquipmentIdS3 = null;
+        return;
+      }
+
+      filtered.forEach((eq, index) => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.tabIndex = 0;
+        card.setAttribute("role", "button");
+        card.setAttribute("aria-pressed", selectedEquipmentIdS3 === eq.id ? "true" : "false");
+        card.setAttribute("aria-label", `View details of ${eq.name}`);
+
+        const img = document.createElement("img");
+        img.src = eq.imageUrl;
+        img.alt = eq.name;
+        img.loading = "lazy";
+
+        const nameDiv = document.createElement("div");
+        nameDiv.className = "card-name";
+        nameDiv.textContent = eq.name;
+
+        const buttonsDiv = document.createElement("div");
+        buttonsDiv.className = "card-buttons";
+
+        // Determine buttons based on row index (0-based)
+        const rowIndex = Math.floor(index / 3);
+
+        // Row 1: only "View Details"
+        if (rowIndex === 0) {
+          const viewDetailsBtn = document.createElement("button");
+          viewDetailsBtn.textContent = "View Details";
+          viewDetailsBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            selectedEquipmentIdS3 = eq.id;
+            updateSelectionS3();
+          });
+          buttonsDiv.appendChild(viewDetailsBtn);
+        }
+        // Row 2: "View Details" & "Book Equipment"
+        else if (rowIndex === 1) {
+          const viewDetailsBtn = document.createElement("button");
+          viewDetailsBtn.textContent = "View Details";
+          viewDetailsBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            selectedEquipmentIdS3 = eq.id;
+            updateSelectionS3();
+          });
+          const bookBtn = document.createElement("button");
+          bookBtn.textContent = "Book Equipment";
+          bookBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            alert(`Booking requested for: ${eq.name}`);
+          });
+          buttonsDiv.appendChild(viewDetailsBtn);
+          buttonsDiv.appendChild(bookBtn);
+        }
+        // Row 3 and beyond: "View Details", "Book Equipment", "Request Training"
+        else {
+          const viewDetailsBtn = document.createElement("button");
+          viewDetailsBtn.textContent = "View Details";
+          viewDetailsBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            selectedEquipmentIdS3 = eq.id;
+            updateSelectionS3();
+          });
+          const bookBtn = document.createElement("button");
+          bookBtn.textContent = "Book Equipment";
+          bookBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            alert(`Booking requested for: ${eq.name}`);
+          });
+          const trainingBtn = document.createElement("button");
+          trainingBtn.textContent = "Request Training";
+          trainingBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            alert(`Training requested for: ${eq.name}`);
+          });
+          buttonsDiv.appendChild(viewDetailsBtn);
+          buttonsDiv.appendChild(bookBtn);
+          buttonsDiv.appendChild(trainingBtn);
+        }
+
+        card.appendChild(img);
+        card.appendChild(nameDiv);
+        card.appendChild(buttonsDiv);
+
+        card.addEventListener("click", () => {
+          selectedEquipmentIdS3 = eq.id;
+          updateSelectionS3();
+        });
+
+        card.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            card.click();
+          }
+        });
+
+        gridS3.appendChild(card);
+      });
+
+      if (!filtered.find(eq => eq.id === selectedEquipmentIdS3)) {
+        selectedEquipmentIdS3 = null;
+      }
+    }
+
+    function updateSelectionS3() {
+      const cards = gridS3.querySelectorAll(".card");
+      cards.forEach(card => {
+        const nameDiv = card.querySelector(".card-name");
+        if (nameDiv && nameDiv.textContent === getSelectedEquipmentNameS3()) {
+          card.setAttribute("aria-pressed", "true");
+          card.style.boxShadow = "0 6px 16px rgb(0 0 0 / 0.3)";
+        } else {
+          card.setAttribute("aria-pressed", "false");
+          card.style.boxShadow = "";
+        }
+      });
+    }
+
+    function getSelectedEquipmentNameS3() {
+      const selected = equipmentData.find(eq => eq.id === selectedEquipmentIdS3);
+      return selected ? selected.name : null;
+    }
+
+    // Version 2 - 4 items per row, all 3 buttons, no description panel
+    const gridS2 = document.getElementById("equipmentGridS2");
+    const searchInputS2 = document.getElementById("searchInputS2");
+    const filterButtonsS2 = document.querySelectorAll("section[aria-label='Metrology Equipment Catalogue - Version 2'] .filter-buttons button");
+
+    let selectedEquipmentIdS2 = null;
+    let currentFilterS2 = "All";
+
+    function filterAndRenderS2() {
+      const searchTerm = searchInputS2.value.trim().toLowerCase();
+      let filtered = equipmentData.filter(eq => {
+        const matchesSearch = eq.name.toLowerCase().includes(searchTerm);
+        const matchesCategory = currentFilterS2 === "All" || eq.category === currentFilterS2;
+        return matchesSearch && matchesCategory;
+      });
+
+      filtered.sort((a, b) => a.name.localeCompare(b.name));
+
+      gridS2.innerHTML = "";
+
+      if (filtered.length === 0) {
+        gridS2.innerHTML = "<p>No equipment found.</p>";
+        selectedEquipmentIdS2 = null;
+        return;
+      }
+
+      filtered.forEach(eq => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.tabIndex = 0;
+        card.setAttribute("role", "button");
+        card.setAttribute("aria-pressed", selectedEquipmentIdS2 === eq.id ? "true" : "false");
+        card.setAttribute("aria-label", `View details of ${eq.name}`);
+
+        const img = document.createElement("img");
+        img.src = eq.imageUrl;
+        img.alt = eq.name;
+        img.loading = "lazy";
+
+        const nameDiv = document.createElement("div");
+        nameDiv.className = "card-name";
+        nameDiv.textContent = eq.name;
+
+        const buttonsDiv = document.createElement("div");
+        buttonsDiv.className = "card-buttons";
+
+        const viewDetailsBtn = document.createElement("button");
+        viewDetailsBtn.textContent = "View Details";
+        viewDetailsBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          selectedEquipmentIdS2 = eq.id;
+          updateSelectionS2();
+        });
+
+        const bookBtn = document.createElement("button");
+        bookBtn.textContent = "Book Equipment";
+        bookBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          alert(`Booking requested for: ${eq.name}`);
+        });
+
+        const trainingBtn = document.createElement("button");
+        trainingBtn.textContent = "Request Training";
+        trainingBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          alert(`Training requested for: ${eq.name}`);
+        });
+
+        buttonsDiv.appendChild(viewDetailsBtn);
+        buttonsDiv.appendChild(bookBtn);
+        buttonsDiv.appendChild(trainingBtn);
+
+        card.appendChild(img);
+        card.appendChild(nameDiv);
+        card.appendChild(buttonsDiv);
+
+        card.addEventListener("click", () => {
+          selectedEquipmentIdS2 = eq.id;
+          updateSelectionS2();
+        });
+
+        card.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            card.click();
+          }
+        });
+
+        gridS2.appendChild(card);
+      });
+
+      if (!filtered.find(eq => eq.id === selectedEquipmentIdS2)) {
+        selectedEquipmentIdS2 = null;
+      }
+    }
+
+    function updateSelectionS2() {
+      const cards = gridS2.querySelectorAll(".card");
+      cards.forEach(card => {
+        const nameDiv = card.querySelector(".card-name");
+        if (nameDiv && nameDiv.textContent === getSelectedEquipmentNameS2()) {
+          card.setAttribute("aria-pressed", "true");
+          card.style.boxShadow = "0 6px 16px rgb(0 0 0 / 0.3)";
+        } else {
+          card.setAttribute("aria-pressed", "false");
+          card.style.boxShadow = "";
+        }
+      });
+    }
+
+    function getSelectedEquipmentNameS2() {
+      const selected = equipmentData.find(eq => eq.id === selectedEquipmentIdS2);
+      return selected ? selected.name : null;
+    }
+
+    // Version 1 - toggles and search with only "View Details" button and description panel
+    const gridS1 = document.getElementById("equipmentGridS1");
+    const descPanelS1 = document.getElementById("descriptionPanelS1");
+    const searchInputS1 = document.getElementById("searchInputS1");
+    const filterCMMS1 = document.getElementById("filterCMMS1");
+    const filterCalipersS1 = document.getElementById("filterCalipersS1");
+    const filterMicrometersS1 = document.getElementById("filterMicrometersS1");
+    const filterGaugeBlocksS1 = document.getElementById("filterGaugeBlocksS1");
+    const filterSurfacePlatesS1 = document.getElementById("filterSurfacePlatesS1");
+    const filterOpticalS1 = document.getElementById("filterOpticalS1");
+
+    let selectedEquipmentIdS1 = null;
+
+    function filterAndRenderS1() {
+      const searchTerm = searchInputS1.value.trim().toLowerCase();
+      const showCMM = filterCMMS1.checked;
+      const showCalipers = filterCalipersS1.checked;
+      const showMicrometers = filterMicrometersS1.checked;
+      const showGaugeBlocks = filterGaugeBlocksS1.checked;
+      const showSurfacePlates = filterSurfacePlatesS1.checked;
+      const showOptical = filterOpticalS1.checked;
+
+      const filtered = equipmentData.filter(eq => {
+        const matchesSearch = eq.name.toLowerCase().includes(searchTerm);
+        const matchesCategory =
+          (eq.category === "CMM" && showCMM) ||
+          (eq.category === "Calipers" && showCalipers) ||
+          (eq.category === "Micrometers" && showMicrometers) ||
+          (eq.category === "Gauge Blocks" && showGaugeBlocks) ||
+          (eq.category === "Surface Plates" && showSurfacePlates) ||
+          (eq.category === "Optical" && showOptical);
+        return matchesSearch && matchesCategory;
+      });
+
+      filtered.sort((a, b) => a.name.localeCompare(b.name));
+
+      gridS1.innerHTML = "";
+
+      if (filtered.length === 0) {
+        gridS1.innerHTML = "<p>No equipment found.</p>";
+        descPanelS1.innerHTML = '<p class="no-selection">Select an equipment to view its description here.</p>';
+        selectedEquipmentIdS1 = null;
+        return;
+      }
+
+      filtered.forEach(eq => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.tabIndex = 0;
+        card.setAttribute("role", "button");
+        card.setAttribute("aria-pressed", selectedEquipmentIdS1 === eq.id ? "true" : "false");
+        card.setAttribute("aria-label", `View details of ${eq.name}`);
+
+        const img = document.createElement("img");
+        img.src = eq.imageUrl;
+        img.alt = eq.name;
+        img.loading = "lazy";
+
+        const nameDiv = document.createElement("div");
+        nameDiv.className = "card-name";
+        nameDiv.textContent = eq.name;
+
+        const buttonsDiv = document.createElement("div");
+        buttonsDiv.className = "card-buttons";
+
+        const viewDetailsBtn = document.createElement("button");
+        viewDetailsBtn.textContent = "View Details";
+        viewDetailsBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          selectedEquipmentIdS1 = eq.id;
+          renderDescriptionS1(eq);
+          updateSelectionS1();
+        });
+
+        buttonsDiv.appendChild(viewDetailsBtn);
+
+        card.appendChild(img);
+        card.appendChild(nameDiv);
+        card.appendChild(buttonsDiv);
+
+        card.addEventListener("click", () => {
+          selectedEquipmentIdS1 = eq.id;
+          renderDescriptionS1(eq);
+          updateSelectionS1();
+        });
+        card.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            card.click();
+          }
+        });
+
+        gridS1.appendChild(card);
+      });
+
+      if (!filtered.find(eq => eq.id === selectedEquipmentIdS1)) {
+        selectedEquipmentIdS1 = null;
+        descPanelS1.innerHTML = '<p class="no-selection">Select an equipment to view its description here.</p>';
+      }
+      updateSelectionS1();
+    }
+
+    function renderDescriptionS1(eq) {
+      descPanelS1.innerHTML = `
+        <h2>${eq.name}</h2>
+        <p><strong>Category:</strong> ${eq.category}</p>
+        <p>${eq.description}</p>
+      `;
+      descPanelS1.focus();
+    }
+
+    function updateSelectionS1() {
+      const cards = gridS1.querySelectorAll(".card");
+      cards.forEach(card => {
+        const nameDiv = card.querySelector(".card-name");
+        if (nameDiv && nameDiv.textContent === getSelectedEquipmentNameS1()) {
+          card.setAttribute("aria-pressed", "true");
+          card.style.boxShadow = "0 6px 16px rgb(0 0 0 / 0.3)";
+        } else {
+          card.setAttribute("aria-pressed", "false");
+          card.style.boxShadow = "";
+        }
+      });
+    }
+
+    function getSelectedEquipmentNameS1() {
+      const selected = equipmentData.find(eq => eq.id === selectedEquipmentIdS1);
+      return selected ? selected.name : null;
+    }
+
+    // Event listeners Section 3
+    filterButtonsS3.forEach(button => {
+      button.addEventListener("click", () => {
+        filterButtonsS3.forEach(btn => btn.classList.remove("active"));
+        button.classList.add("active");
+        currentFilterS3 = button.getAttribute("data-filter");
+        filterAndRenderS3();
+      });
+    });
+    searchInputS3.addEventListener("input", filterAndRenderS3);
+
+    // Event listeners Section 2
+    filterButtonsS2.forEach(button => {
+      button.addEventListener("click", () => {
+        filterButtonsS2.forEach(btn => btn.classList.remove("active"));
+        button.classList.add("active");
+        currentFilterS2 = button.getAttribute("data-filter");
+        filterAndRenderS2();
+      });
+    });
+    searchInputS2.addEventListener("input", filterAndRenderS2);
+
+    // Event listeners Section 1
+    searchInputS1.addEventListener("input", filterAndRenderS1);
+    filterCMMS1.addEventListener("change", filterAndRenderS1);
+    filterCalipersS1.addEventListener("change", filterAndRenderS1);
+    filterMicrometersS1.addEventListener("change", filterAndRenderS1);
+    filterGaugeBlocksS1.addEventListener("change", filterAndRenderS1);
+    filterSurfacePlatesS1.addEventListener("change", filterAndRenderS1);
+    filterOpticalS1.addEventListener("change", filterAndRenderS1);
+
+    // Initial renders
+    filterAndRenderS3();
+    filterAndRenderS2();
+    filterAndRenderS1();
+  </script>
+</body>
+</html>
