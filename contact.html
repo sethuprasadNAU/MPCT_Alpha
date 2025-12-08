@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Gateway | NAU Semiconductor Metrology Lab</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        nau: {
+                            blue: '#003466',       
+                            darkNav: '#0f172a',    
+                            gold: '#ffcd00',       
+                            goldHover: '#e6b800',  
+                            green: '#43692d',      
+                            deepGreen: '#004e38',  
+                            orange: '#d45d00',     
+                            offWhite: '#f4f1ed',   
+                            white: '#ffffff',
+                            grayBg: '#f0f4f8'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Barlow', 'sans-serif'],            
+                        heading: ['Barlow Condensed', 'sans-serif'], 
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Form Focus Styles */
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #003466;
+            ring: 2px;
+            box-shadow: 0 0 0 1px #003466;
+        }
+        
+        .required::after {
+            content: " *";
+            color: #d32f2f;
+        }
+
+        /* Gateway Card Selection State */
+        .gateway-card {
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+        }
+        .gateway-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            border-color: #ffcd00;
+        }
+        .gateway-card.selected {
+            background-color: #003466;
+            border-color: #003466;
+            color: white;
+        }
+        .gateway-card.selected p, .gateway-card.selected i {
+            color: #f4f1ed;
+        }
+        .gateway-card.selected h3 {
+            color: #ffcd00;
+        }
+
+        /* Animation for form reveal */
+        .fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-800 antialiased bg-nau-offWhite flex flex-col min-h-screen">
+
+    <!-- Top Bar -->
+    <div class="bg-nau-blue text-white w-full border-b border-blue-900 hidden md:block">
+        <div class="max-w-[1400px] mx-auto px-4 lg:px-8">
+            <div class="flex justify-between h-[50px] items-center">
+                <div class="flex items-center gap-4">
+                    <a href="index.html" class="flex items-center">
+                        <img src="NAU.png" 
+                             alt="Northern Arizona University" 
+                             class="h-10 w-auto object-contain">
+                    </a>
+                </div>
+                <div class="flex items-center gap-6 font-sans text-[15px] font-medium tracking-wide">
+                    <a href="#" class="hover:text-nau-gold transition-colors">Research</a>
+                    <a href="#" class="hover:text-nau-gold transition-colors">Athletics</a>
+                    <a href="#" class="hover:text-nau-gold transition-colors">Alumni</a>
+                    <a href="#" class="hover:text-nau-gold transition-colors">Giving</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Navigation -->
+    <nav class="bg-nau-darkNav text-white sticky top-0 z-40 shadow-xl border-b border-gray-800">
+        <div class="max-w-[1400px] mx-auto px-4 lg:px-8">
+            <div class="flex justify-between h-[70px] items-center">
+                <div class="hidden md:flex space-x-8 items-center font-sans text-[17px] font-normal tracking-wide h-full">
+                    <a href="index.html" class="h-full flex items-center border-b-4 border-transparent hover:border-nau-gold hover:text-nau-gold transition-all">Home</a>
+                    <a href="index.html#education" class="h-full flex items-center border-b-4 border-transparent hover:border-nau-gold hover:text-nau-gold transition-all">Get Started</a>
+                    <a href="scroll.html" class="h-full flex items-center border-b-4 border-transparent hover:border-nau-gold hover:text-nau-gold transition-all">Equipments</a>
+                    <a href="index.html#about" class="h-full flex items-center border-b-4 border-transparent hover:border-nau-gold hover:text-nau-gold transition-all">About</a>
+                    <a href="index.html#contact" class="h-full flex items-center border-b-4 border-transparent hover:border-nau-gold hover:text-nau-gold transition-all">Billing</a>
+                </div>
+                <div class="hidden md:flex items-center gap-4">
+                    <a href="#" class="bg-nau-green hover:bg-green-800 text-white px-5 py-2 rounded-sm font-medium transition-colors text-base shadow-sm border border-green-700 cursor-default">
+                        Contact Lab <i class="fas fa-envelope ml-2 text-xs"></i>
+                    </a>
+                    <a href="Booking1.html" class="bg-nau-gold text-nau-darkNav px-5 py-2 rounded-sm font-bold hover:bg-nau-goldHover transition-colors shadow-sm flex items-center gap-2">
+                        Book Equipment <i class="fas fa-arrow-right text-xs"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-[1400px] mx-auto px-4 lg:px-8 py-10 text-center">
+            <h1 class="font-heading text-4xl md:text-5xl font-extrabold text-nau-blue uppercase tracking-tight">How Can We Help You?</h1>
+            <p class="text-gray-600 text-lg mt-2 max-w-2xl mx-auto">Select a category below to route your inquiry to the correct department.</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow py-12">
+        <div class="max-w-[1200px] mx-auto px-4 lg:px-8">
+            
+            <!-- GATEWAY GRID -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-12" id="gatewayGrid">
+                
+                <!-- Option 1: Equipment -->
+                <div class="gateway-card bg-white p-6 rounded-sm shadow-sm border border-gray-200 text-center" onclick="selectCategory('equipment', this)">
+                    <i class="fas fa-microscope text-4xl text-nau-blue mb-4"></i>
+                    <h3 class="font-heading text-xl font-bold text-gray-800 uppercase mb-2">Equipment Access</h3>
+                    <p class="text-sm text-gray-500">Reservations, technical capabilities, and instrument status.</p>
+                </div>
+
+                <!-- Option 2: Research -->
+                <div class="gateway-card bg-white p-6 rounded-sm shadow-sm border border-gray-200 text-center" onclick="selectCategory('research', this)">
+                    <i class="fas fa-atom text-4xl text-nau-blue mb-4"></i>
+                    <h3 class="font-heading text-xl font-bold text-gray-800 uppercase mb-2">Collaborations</h3>
+                    <p class="text-sm text-gray-500">Joint research proposals, grants, and industry partnerships.</p>
+                </div>
+
+                <!-- Option 3: Billing -->
+                <div class="gateway-card bg-white p-6 rounded-sm shadow-sm border border-gray-200 text-center" onclick="selectCategory('billing', this)">
+                    <i class="fas fa-file-invoice-dollar text-4xl text-nau-blue mb-4"></i>
+                    <h3 class="font-heading text-xl font-bold text-gray-800 uppercase mb-2">Billing & Invoices</h3>
+                    <p class="text-sm text-gray-500">Purchase orders, service quotes, and payment inquiries.</p>
+                </div>
+
+                <!-- Option 4: Training -->
+                <div class="gateway-card bg-white p-6 rounded-sm shadow-sm border border-gray-200 text-center" onclick="selectCategory('training', this)">
+                    <i class="fas fa-user-graduate text-4xl text-nau-blue mb-4"></i>
+                    <h3 class="font-heading text-xl font-bold text-gray-800 uppercase mb-2">Training</h3>
+                    <p class="text-sm text-gray-500">Safety certification, tool training, and badge access.</p>
+                </div>
+
+                <!-- Option 5: Courses -->
+                <div class="gateway-card bg-white p-6 rounded-sm shadow-sm border border-gray-200 text-center" onclick="selectCategory('courses', this)">
+                    <i class="fas fa-chalkboard-teacher text-4xl text-nau-blue mb-4"></i>
+                    <h3 class="font-heading text-xl font-bold text-gray-800 uppercase mb-2">Courses</h3>
+                    <p class="text-sm text-gray-500">Undergraduate labs, curriculum support, and student access.</p>
+                </div>
+
+                <!-- Option 6: Tour -->
+                <div class="gateway-card bg-white p-6 rounded-sm shadow-sm border border-gray-200 text-center" onclick="selectCategory('tour', this)">
+                    <i class="fas fa-map-marked-alt text-4xl text-nau-blue mb-4"></i>
+                    <h3 class="font-heading text-xl font-bold text-gray-800 uppercase mb-2">Facility Tour</h3>
+                    <p class="text-sm text-gray-500">Request a guided tour for groups, schools, or VIPs.</p>
+                </div>
+
+                <!-- Option 7: Sales -->
+                <div class="gateway-card bg-white p-6 rounded-sm shadow-sm border border-gray-200 text-center" onclick="selectCategory('sales', this)">
+                    <i class="fas fa-truck-loading text-4xl text-nau-blue mb-4"></i>
+                    <h3 class="font-heading text-xl font-bold text-gray-800 uppercase mb-2">Vendor / Sales</h3>
+                    <p class="text-sm text-gray-500">Product demos, supply deliveries, and vendor registration.</p>
+                </div>
+
+                <!-- Option 8: Other -->
+                <div class="gateway-card bg-white p-6 rounded-sm shadow-sm border border-gray-200 text-center" onclick="selectCategory('other', this)">
+                    <i class="fas fa-comment-dots text-4xl text-nau-blue mb-4"></i>
+                    <h3 class="font-heading text-xl font-bold text-gray-800 uppercase mb-2">General / Other</h3>
+                    <p class="text-sm text-gray-500">Website issues, feedback, or general questions.</p>
+                </div>
+
+            </div>
+
+            <!-- DYNAMIC FORM CONTAINER -->
+            <div id="formContainer" class="hidden bg-white rounded-sm shadow-lg border-t-4 border-nau-gold overflow-hidden fade-in">
+                
+                <div class="p-8">
+                    <!-- Dynamic Header -->
+                    <div class="mb-8 border-b border-gray-200 pb-4">
+                        <h2 id="formTitle" class="font-heading text-3xl font-bold text-nau-blue uppercase">Contact Details</h2>
+                        <p id="formDesc" class="text-gray-600 mt-1">Please fill out the information below.</p>
+                    </div>
+
+                    <form>
+                        <!-- Common Fields (Always Visible) -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-1 required">First Name</label>
+                                <input type="text" class="w-full bg-gray-50 border border-gray-300 rounded-sm p-2.5" placeholder="Jane">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-1 required">Last Name</label>
+                                <input type="text" class="w-full bg-gray-50 border border-gray-300 rounded-sm p-2.5" placeholder="Doe">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-1 required">Email</label>
+                                <input type="email" class="w-full bg-gray-50 border border-gray-300 rounded-sm p-2.5" placeholder="jane.doe@example.com">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-1">Phone</label>
+                                <input type="tel" class="w-full bg-gray-50 border border-gray-300 rounded-sm p-2.5" placeholder="(555) 123-4567">
+                            </div>
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-bold text-gray-700 mb-1 required">Organization / Affiliation</label>
+                                <input type="text" class="w-full bg-gray-50 border border-gray-300 rounded-sm p-2.5" placeholder="University Name or Company">
+                            </div>
+                        </div>
+
+                        <!-- DYNAMIC FIELDS START HERE -->
+                        <div id="dynamicFields" class="border-t border-gray-200 pt-6 mb-6">
+                            <!-- JS will inject HTML here -->
+                        </div>
+                        <!-- DYNAMIC FIELDS END HERE -->
+
+                        <!-- Submit Button -->
+                        <div class="flex items-center justify-end gap-4">
+                            <button type="button" onclick="resetSelection()" class="text-gray-500 font-bold uppercase text-sm hover:text-nau-blue">Cancel</button>
+                            <button type="submit" class="bg-nau-blue text-white px-8 py-3 rounded-sm font-bold hover:bg-nau-gold hover:text-nau-blue transition-colors uppercase tracking-wide shadow-md">
+                                Submit Request
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-nau-blue text-white pt-16 pb-8 border-t-8 border-nau-gold mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+                <div>
+                    <h4 class="font-heading font-bold text-lg mb-4 text-nau-gold uppercase tracking-widest">Contact Us</h4>
+                    <p class="mb-2 text-blue-100">semicon.lab@nau.edu</p>
+                    <p class="text-blue-100">(928) 523-0000</p>
+                </div>
+                <div class="text-right md:col-span-2">
+                     <div class="font-heading font-extrabold text-4xl text-white mb-2 tracking-tighter">NAU</div>
+                     <p class="text-sm text-blue-200">Flagstaff, AZ 86011</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Data for Dynamic Fields
+        const fieldData = {
+            'equipment': {
+                title: "Equipment Inquiry",
+                desc: "Check availability or request specs for specific tools.",
+                fields: `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-1 required">Equipment of Interest</label>
+                            <select class="w-full bg-gray-50 border border-gray-300 rounded-sm p-2.5">
+                                <option>-- Select Tool --</option>
+                                <option>Keyence VHX-7000</option>
+                                <option>B-2 AFM</option>
+                                <option>JEOL TEM</option>
+                                <option>Mask Aligner</option>
+                                <option>Other / Unsure</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-1">Intended Usage</label>
+                            <select class="w-full bg-gray-50 border border-gray-300 rounded-sm p-2.5">
+                                <option>Self-Use (I need training)</option>
+                                <option>Service (Staff runs samples)</option>
+                            </select>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-bold text-gray-700 mb-1 required">Technical Requirements</label>
+                            <textarea rows="3" class="w-full bg-gray-50 border border-gray-300 rounded-sm p-2.5" placeholder="Describe sample type, size, and measurement goals..."></textarea>
+                        </div>
+                    </div>
+                `
+            },
+            'research': {
+                title: "Research Collaboration",
+                desc: "Propose a joint project or grant partnership.",
+                fields: `
+                    <div class="grid grid-cols-1 gap-6">
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-1 required">Project Title / Topic</label>
+                            <input type="text" class="w-full bg-gray-50 border border-gray-300 rounded-sm p-2.5" placeholder="e.g. Novel Dielectric Characterization">
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-1">Funding Agency (if applicable)</label>
+                                <input type="text" class="w-full bg-gray-50 border border-gray-300 rounded-sm p-2.5" placeholder="NSF, DOE, Industry...">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-1">Estimated Timeline</label>
+                                <select class="w-full bg-gray-50 border border-gray-300 rounded-sm p-2.5">
+                                    <option>Short Term (< 3 months)</option>
+                                    <option>Long Term (1+ year)</option>
+                                    <option>Grant Proposal Phase</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-1 required">Project Abstract</label>
+                            <textarea rows="5" class="w-full bg-gray-50 border border-gray-300 rounded-sm p-2.5" placeholder="Provide a brief summary of the research goals..."></textarea>
+                        </div>
+                    </div>
+                `
+            },
+            'billing': {
+                title: "Billing & Invoicing",
+                desc: "Resolve payment issues or request quotes.",
+                fields: `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-1 required">Reference Number</label>
+                            <input type="text" class="w-full bg-gray-50 border border-gray-300 rounded-sm p-2.5" placeholder="Invoice # or PO #">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-1 required">Billing Contact Person</label>
+                            <input type="text" class="w-full bg-gray-50 border border-gray-300 rounded-sm p-2.5">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-bold text-gray-700 mb-1">Billing Address</label>
+                            <textarea rows="2" class="w-full bg-gray-50 border border-gray-300 rounded-sm p-2.5"></textarea>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-bold text-gray-700 mb-1">Issue Description</label>
+                            <textarea rows="3" class="w-full bg-gray-50 border border-gray-300 rounded-sm p-2.5" placeholder="Describe the billing discrepancy or request..."></textarea>
+                        </div>
+                    </div>
+                `
+            },
+            'training': {
+                title: "Safety & Training",
+                desc: "Register for safety courses or equipment authorization.",
+                fields: `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-1 required">Current Status</label>
+                            <select class="w-full bg-gray-50 border border-gray-300 rounded-sm p-2.5">
+                                <option>New User (No Access)</option>
+                                <option>Active User (Adding Tool)</option>
+                                <option>Expired Access (Renewal)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-1 required">Requested Training</label>
+                            <select class="w-full bg-gray-50 border border-gray-300 rounded-sm p-2.5">
+                                <option>EHS Basic Safety (Mandatory)</option>
+                                <option>Cleanroom Gowning</option>
+                                <option>Chemical Safety</option>
+                                <option>Specific Tool Authorization</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-1">NAU ID (if applicable)</label>
+                            <input type="text" class="w-full bg-gray-50 border border-gray-300 rounded-sm p-2.5" placeholder="1234567">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-1">PI / Supervisor Name</label>
+                            <input type="text" class="w-full bg-gray-50 border border-gray-300 rounded-sm p-2.5">
+                        </div>
+                    </div>
+                `
+            },
+            'courses': {
+                title: "Course Support",
+                desc: "Inquiries regarding lab classes or curriculum.",
+                fields: `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-1 required">Course Number</label>
+                            <input type="text" class="w-full bg-gray-50 border border-gray-300 rounded-sm p-2.5" placeholder="e.g. EE400">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-1">Semester</label>
+                            <select class="w-full bg-gray-50 border border-gray-300 rounded-sm p-2.5">
+                                <option>Fall 2025</option>
+                                <option>Spring 2026</option>
+                                <option>Summer 2026</option>
+                            </select>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-bold text-gray-700 mb-1 required">Inquiry</label>
+                            <textarea rows="3" class="w-full bg-gray-50 border border-gray-300 rounded-sm p-2.5" placeholder="Question about lab schedule, materials, or enrollment..."></textarea>
+                        </div>
+                    </div>
+                `
+            },
+            'tour': {
+                title: "Schedule a Tour",
+                desc: "Visit the facility.",
+                fields: `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-1 required">Group Size</label>
+                            <input type="number" class="w-full bg-gray-50 border border-gray-300 rounded-sm p-2.5" placeholder="Approx number of people">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-1 required">Group Type</label>
+                            <select class="w-full bg-gray-50 border border-gray-300 rounded-sm p-2.5">
+                                <option>K-12 School</option>
+                                <option>Prospective Students</option>
+                                <option>Industry Partners</option>
+                                <option>Academic Guests</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-1 required">Preferred Date</label>
+                            <input type="date" class="w-full bg-gray-50 border border-gray-300 rounded-sm p-2.5">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-1">Alternative Date</label>
+                            <input type="date" class="w-full bg-gray-50 border border-gray-300 rounded-sm p-2.5">
+                        </div>
+                    </div>
+                `
+            },
+            'sales': {
+                title: "Vendor / Sales",
+                desc: "Product demonstrations and supply chain.",
+                fields: `
+                    <div class="grid grid-cols-1 gap-6">
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-1 required">Product Category</label>
+                            <input type="text" class="w-full bg-gray-50 border border-gray-300 rounded-sm p-2.5" placeholder="e.g. Chemicals, Metrology Equipment, PPE">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-1 required">Message</label>
+                            <textarea rows="4" class="w-full bg-gray-50 border border-gray-300 rounded-sm p-2.5" placeholder="Describe your product or reason for contact..."></textarea>
+                        </div>
+                    </div>
+                `
+            },
+            'other': {
+                title: "General Inquiry",
+                desc: "How can we help you?",
+                fields: `
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1 required">Message</label>
+                        <textarea rows="5" class="w-full bg-gray-50 border border-gray-300 rounded-sm p-2.5" placeholder="Please describe your question or issue..."></textarea>
+                    </div>
+                `
+            }
+        };
+
+        function selectCategory(category, element) {
+            // Remove active class from all cards
+            document.querySelectorAll('.gateway-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            // Add active class to clicked card
+            element.classList.add('selected');
+
+            // Populate Form
+            const data = fieldData[category];
+            document.getElementById('formTitle').innerText = data.title;
+            document.getElementById('formDesc').innerText = data.desc;
+            document.getElementById('dynamicFields').innerHTML = data.fields;
+
+            // Show Form Container
+            const formContainer = document.getElementById('formContainer');
+            formContainer.classList.remove('hidden');
+            
+            // Scroll to form
+            formContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function resetSelection() {
+            document.getElementById('formContainer').classList.add('hidden');
+            document.querySelectorAll('.gateway-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            document.getElementById('gatewayGrid').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

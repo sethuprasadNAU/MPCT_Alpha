@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B-2 AFM | NAU Metrology</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        nau: {
+                            blue: '#003466',       // Official NAU Blue
+                            darkNav: '#0f172a',    // Dark navy for navbar
+                            gold: '#ffcd00',       // Official NAU Gold
+                            goldHover: '#e6b800',  
+                            green: '#43692d',      // Standard green
+                            deepGreen: '#004e38',  // Dark green for Location section
+                            orange: '#d45d00',     // Orange for Request Info button
+                            offWhite: '#f4f1ed',   
+                            white: '#ffffff',
+                            grayBg: '#f0f4f8'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Barlow', 'sans-serif'],            
+                        heading: ['Barlow Condensed', 'sans-serif'], 
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scroll::-webkit-scrollbar { height: 8px; }
+        .custom-scroll::-webkit-scrollbar-track { background: #f1f1f1; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #003466; border-radius: 4px; }
+        
+        .timeline-line {
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: #e5e7eb;
+            z-index: 0;
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-800 antialiased bg-nau-grayBg flex flex-col min-h-screen">
+
+    <!-- Top Bar -->
+    <div class="bg-nau-blue text-white w-full border-b border-blue-900 hidden md:block">
+        <div class="max-w-[1400px] mx-auto px-4 lg:px-8">
+            <div class="flex justify-between h-[50px] items-center">
+                <div class="flex items-center gap-4">
+                    <a href="index.html" class="flex items-center">
+                        <img src="NAU.png" 
+                             alt="Northern Arizona University" 
+                             class="h-10 w-auto object-contain">
+                    </a>
+                </div>
+
+                <div class="flex items-center gap-6 font-sans text-[15px] font-medium tracking-wide">
+                    <a href="#" class="hover:text-nau-gold transition-colors">Research</a>
+                    <a href="#" class="hover:text-nau-gold transition-colors">Athletics</a>
+                    <a href="#" class="hover:text-nau-gold transition-colors">Alumni</a>
+                    <a href="#" class="hover:text-nau-gold transition-colors">Giving</a>
+                    <div class="flex items-center gap-2 ml-4 text-gray-300">
+                        <i class="fas fa-moon"></i>
+                        <div class="w-10 h-5 bg-blue-400 rounded-full relative cursor-pointer">
+                            <div class="absolute right-1 top-1 w-3 h-3 bg-white rounded-full shadow-md"></div>
+                        </div>
+                        <i class="fas fa-sun text-white"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Navigation -->
+    <nav class="bg-nau-darkNav text-white sticky top-0 z-40 shadow-xl border-b border-gray-800">
+        <div class="max-w-[1400px] mx-auto px-4 lg:px-8">
+            <div class="flex justify-between h-[70px] items-center">
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-8 items-center font-sans text-[17px] font-normal tracking-wide h-full">
+                    <a href="index.html" class="h-full flex items-center border-b-4 border-transparent hover:border-nau-gold hover:text-nau-gold transition-all">Home</a>
+                    <a href="index.html#education" class="h-full flex items-center border-b-4 border-transparent hover:border-nau-gold hover:text-nau-gold transition-all">Get Started</a>
+                    <a href="scroll.html" class="h-full flex items-center border-b-4 border-nau-gold text-nau-gold transition-all">Equipments</a>
+                    <a href="index.html#about" class="h-full flex items-center border-b-4 border-transparent hover:border-nau-gold hover:text-nau-gold transition-all">About</a>
+                    <a href="index.html#contact" class="h-full flex items-center border-b-4 border-transparent hover:border-nau-gold hover:text-nau-gold transition-all">Billing</a>
+                </div>
+                <!-- Desktop Actions -->
+                <div class="hidden md:flex items-center gap-4">
+                    <button class="text-white hover:text-nau-gold transition-colors mr-2"><i class="fas fa-search text-xl"></i></button>
+                    <a href="index.html#contact" class="bg-nau-green hover:bg-green-800 text-white px-5 py-2 rounded-sm font-medium transition-colors text-base shadow-sm">Contact Lab</a>
+                    <a href="Booking1.html" class="bg-nau-gold text-nau-darkNav px-5 py-2 rounded-sm font-bold hover:bg-nau-goldHover transition-colors shadow-sm flex items-center gap-2">Book Equipment <i class="fas fa-arrow-right text-xs"></i></a>
+                </div>
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-white hover:text-nau-gold focus:outline-none"><i class="fas fa-bars text-2xl"></i></button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-nau-darkNav border-t border-gray-700">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 font-sans text-lg">
+                <a href="index.html" class="block px-3 py-2 rounded-md font-medium hover:bg-gray-800 hover:text-nau-gold text-white">Home</a>
+                <a href="scroll.html" class="block px-3 py-2 rounded-md font-medium hover:bg-gray-800 hover:text-nau-gold text-white">Equipments</a>
+                <a href="Booking1.html" class="block w-full text-left px-3 py-2 rounded-md font-bold bg-nau-gold text-nau-darkNav mt-4">Book Equipment</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow">
+        
+        <!-- Breadcrumb & Back Link -->
+        <div class="bg-white border-b border-gray-200">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+                <a href="scroll.html" class="text-nau-blue hover:text-nau-gold font-bold text-sm uppercase tracking-wide inline-flex items-center transition-colors">
+                    <i class="fas fa-arrow-left mr-2"></i> Back to Catalog
+                </a>
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            
+            <!-- Header Section -->
+            <div class="flex flex-col lg:flex-row gap-12 mb-16">
+                <!-- Image -->
+                <div class="lg:w-1/2">
+                    <div class="rounded-sm overflow-hidden shadow-lg border border-gray-200">
+                        <img src="B2_AFM.png" alt="B-2 AFM" class="w-full h-auto object-cover">
+                    </div>
+                </div>
+
+                <!-- Intro Text -->
+                <div class="lg:w-1/2 flex flex-col justify-center">
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="inline-block bg-nau-blue text-white px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-sm">Nanometrology</span>
+                        <span class="inline-block bg-nau-gold text-nau-darkNav px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-sm">Surface Characterization</span>
+                    </div>
+                    
+                    <h1 class="font-heading text-4xl md:text-5xl font-extrabold text-nau-blue uppercase tracking-tight mb-6">B-2 Atomic Force Microscope</h1>
+                    
+                    <p class="text-lg text-gray-700 mb-8 leading-relaxed">
+                        The AFM Workshop B-2 is a versatile atomic force microscope designed for both advanced research and educational training. It provides high-resolution 3D topographical imaging and supports multiple scanning modes, making it an essential tool for characterizing nanomaterials, biological samples, and thin films.
+                    </p>
+
+                    <div class="flex gap-4">
+                        <a href="Booking1.html" class="bg-nau-gold text-nau-darkNav px-8 py-4 rounded-sm font-bold hover:bg-nau-goldHover transition-colors shadow-md uppercase tracking-wide text-center flex-1 md:flex-none">
+                            Book Equipment
+                        </a>
+                        <a href="#specs" class="border-2 border-nau-blue text-nau-blue px-8 py-4 rounded-sm font-bold hover:bg-nau-blue hover:text-white transition-colors uppercase tracking-wide text-center flex-1 md:flex-none">
+                            View Specs
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Two Column Layout for Details -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                
+                <!-- Main Content Column -->
+                <div class="lg:col-span-2 space-y-12">
+                    
+                    <!-- Key Features -->
+                    <section>
+                        <h2 class="font-heading text-3xl font-bold text-nau-blue uppercase mb-6 border-l-4 border-nau-gold pl-4">Capabilities & Modes</h2>
+                        <div class="bg-white p-8 rounded-sm shadow-sm border border-gray-200">
+                            <ul class="space-y-4">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-nau-green mt-1 mr-3 flex-shrink-0"></i>
+                                    <span class="text-gray-700"><strong>Vibrating (Tapping) Mode:</strong> Ideal for soft or fragile samples to minimize surface damage during scanning.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-nau-green mt-1 mr-3 flex-shrink-0"></i>
+                                    <span class="text-gray-700"><strong>Contact Mode:</strong> Provides high-resolution topography for hard surfaces.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-nau-green mt-1 mr-3 flex-shrink-0"></i>
+                                    <span class="text-gray-700"><strong>Phase Imaging:</strong> Detect variations in surface composition, adhesion, friction, and viscoelasticity.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-nau-green mt-1 mr-3 flex-shrink-0"></i>
+                                    <span class="text-gray-700"><strong>Lateral Force Microscopy (LFM):</strong> Measures surface friction on the nanoscale.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-nau-green mt-1 mr-3 flex-shrink-0"></i>
+                                    <span class="text-gray-700"><strong>Open Design:</strong> Allows for easy modification and integration with other optical systems.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </section>
+
+                    <!-- Technical Specs -->
+                    <section id="specs">
+                        <h2 class="font-heading text-3xl font-bold text-nau-blue uppercase mb-6 border-l-4 border-nau-gold pl-4">Technical Specifications</h2>
+                        <div class="bg-white rounded-sm shadow-sm border border-gray-200 overflow-hidden">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <tbody class="bg-white divide-y divide-gray-200 text-sm">
+                                    <tr>
+                                        <td class="px-6 py-3 font-bold text-nau-blue w-1/3 bg-gray-50">XY Scan Range</td>
+                                        <td class="px-6 py-3 text-gray-700">50 µm x 50 µm (Standard)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-3 font-bold text-nau-blue w-1/3 bg-gray-50">Z Scan Range</td>
+                                        <td class="px-6 py-3 text-gray-700">17 µm</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-3 font-bold text-nau-blue w-1/3 bg-gray-50">Z Noise Floor</td>
+                                        <td class="px-6 py-3 text-gray-700">&lt; 0.08 nm</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-3 font-bold text-nau-blue w-1/3 bg-gray-50">Sample Size</td>
+                                        <td class="px-6 py-3 text-gray-700">Max 25 mm diameter, 13 mm thick</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-3 font-bold text-nau-blue w-1/3 bg-gray-50">Video Microscope</td>
+                                        <td class="px-6 py-3 text-gray-700">400x Zoom, 2µm resolution</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-3 font-bold text-nau-blue w-1/3 bg-gray-50">Probe Approach</td>
+                                        <td class="px-6 py-3 text-gray-700">Automated Stepper Motor</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <!-- Comparison Table -->
+                    <section>
+                        <h2 class="font-heading text-3xl font-bold text-nau-blue uppercase mb-6 border-l-4 border-nau-gold pl-4">Comparison: AFM vs Profilometer</h2>
+                        <div class="bg-white rounded-sm shadow-sm border border-gray-200 overflow-hidden">
+                            <table class="min-w-full divide-y divide-gray-200 text-sm">
+                                <thead class="bg-nau-blue text-white">
+                                    <tr>
+                                        <th class="px-6 py-3 text-left font-bold uppercase tracking-wider">Feature</th>
+                                        <th class="px-6 py-3 text-left font-bold uppercase tracking-wider bg-nau-gold text-nau-blue">B-2 AFM</th>
+                                        <th class="px-6 py-3 text-left font-bold uppercase tracking-wider">Stylus Profilometer</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <tr>
+                                        <td class="px-6 py-4 font-medium text-gray-900">Lateral Resolution</td>
+                                        <td class="px-6 py-4 font-bold text-nau-blue bg-yellow-50">Nanometer Scale</td>
+                                        <td class="px-6 py-4 text-gray-500">Micron Scale</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 font-medium text-gray-900">Vertical Resolution</td>
+                                        <td class="px-6 py-4 font-bold text-nau-blue bg-yellow-50">&lt; 0.1 nm</td>
+                                        <td class="px-6 py-4 text-gray-500">~ 1 nm</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 font-medium text-gray-900">3D Imaging</td>
+                                        <td class="px-6 py-4 font-bold text-nau-blue bg-yellow-50">Native (XYZ)</td>
+                                        <td class="px-6 py-4 text-gray-500">Line Scan (2D)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 font-medium text-gray-900">Sample Damage</td>
+                                        <td class="px-6 py-4 font-bold text-nau-blue bg-yellow-50">Minimal (Tapping Mode)</td>
+                                        <td class="px-6 py-4 text-gray-500">Contact Only (Scratch Risk)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 font-medium text-gray-900">Scan Area</td>
+                                        <td class="px-6 py-4 text-gray-500">Small (50 µm max)</td>
+                                        <td class="px-6 py-4 font-bold text-nau-green bg-green-50">Large (mm to cm)</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <!-- Sample Gallery (What it can do) -->
+                    <section>
+                        <h2 class="font-heading text-2xl font-bold text-nau-blue uppercase mb-4 flex items-center">
+                            <i class="fas fa-images mr-2 text-gray-400"></i> AFM Sample Images
+                        </h2>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="group relative rounded-sm overflow-hidden shadow-sm h-48 cursor-pointer bg-black">
+                                <!-- Placeholder for atomic lattice -->
+                                <div class="absolute inset-0 bg-gradient-to-br from-purple-900 to-black opacity-80"></div>
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <i class="fas fa-atom text-4xl text-purple-300 opacity-50"></i>
+                                </div>
+                                <div class="absolute inset-0 flex items-end p-4">
+                                    <span class="text-white text-xs font-bold uppercase">Atomic Lattice</span>
+                                </div>
+                            </div>
+                            <div class="group relative rounded-sm overflow-hidden shadow-sm h-48 cursor-pointer bg-black">
+                                <!-- Placeholder for DNA -->
+                                <div class="absolute inset-0 bg-gradient-to-br from-blue-900 to-black opacity-80"></div>
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <i class="fas fa-dna text-4xl text-blue-300 opacity-50"></i>
+                                </div>
+                                <div class="absolute inset-0 flex items-end p-4">
+                                    <span class="text-white text-xs font-bold uppercase">DNA Strands</span>
+                                </div>
+                            </div>
+                            <div class="group relative rounded-sm overflow-hidden shadow-sm h-48 cursor-pointer bg-black">
+                                <!-- Placeholder for Surface Roughness -->
+                                <div class="absolute inset-0 bg-gradient-to-br from-yellow-900 to-black opacity-80"></div>
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <i class="fas fa-mountain text-4xl text-yellow-300 opacity-50"></i>
+                                </div>
+                                <div class="absolute inset-0 flex items-end p-4">
+                                    <span class="text-white text-xs font-bold uppercase">Surface Roughness</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                </div>
+
+                <!-- RIGHT COLUMN (Sidebar) -->
+                <div class="lg:col-span-1 space-y-6">
+                    
+                    <!-- Primary Action Card (Stationary) -->
+                    <div class="bg-white p-6 rounded-sm shadow-lg border-t-4 border-nau-gold z-10">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-heading text-xl font-bold text-nau-blue uppercase">Access</h3>
+                            <span class="inline-flex items-center px-2 py-1 rounded-full text-[10px] font-bold bg-green-100 text-green-800 border border-green-200">
+                                <span class="w-2 h-2 rounded-full bg-green-500 mr-1 animate-pulse"></span> ONLINE
+                            </span>
+                        </div>
+                        
+                        <!-- Training Timeline -->
+                        <div class="relative pl-8 space-y-6 mb-6">
+                            <div class="timeline-line"></div>
+                            
+                            <div class="relative z-10">
+                                <div class="absolute -left-8 bg-green-500 rounded-full w-4 h-4 border-2 border-white mt-1"></div>
+                                <h4 class="text-xs font-bold uppercase text-gray-500">Step 1: Theory</h4>
+                                <a href="#" class="text-nau-blue font-bold text-sm hover:underline">AFM Basics (Canvas)</a>
+                            </div>
+                            
+                            <div class="relative z-10">
+                                <div class="absolute -left-8 bg-gray-300 rounded-full w-4 h-4 border-2 border-white mt-1"></div>
+                                <h4 class="text-xs font-bold uppercase text-gray-500">Step 2: Training</h4>
+                                <p class="text-sm text-gray-700">Probe Loading & Scan (2hr)</p>
+                            </div>
+
+                            <div class="relative z-10">
+                                <div class="absolute -left-8 bg-gray-300 rounded-full w-4 h-4 border-2 border-white mt-1"></div>
+                                <h4 class="text-xs font-bold uppercase text-gray-500">Step 3: Access</h4>
+                                <p class="text-sm text-gray-700">Independent Booking</p>
+                            </div>
+                        </div>
+
+                        <a href="Booking1.html" class="block w-full bg-nau-blue text-white text-center py-3 rounded-sm font-bold uppercase hover:bg-nau-gold hover:text-nau-blue transition-colors mb-3">
+                            Reserve Tool
+                        </a>
+                        <button class="block w-full border border-gray-300 text-gray-600 text-center py-3 rounded-sm font-bold uppercase hover:bg-gray-50 transition-colors text-xs">
+                            Request Training
+                        </button>
+                    </div>
+
+                    <!-- Contact Card -->
+                    <div class="bg-white p-6 rounded-sm shadow-sm border border-gray-200">
+                        <h4 class="font-heading text-lg font-bold text-nau-blue uppercase mb-4">Tool Owner</h4>
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center text-gray-400">
+                                <i class="fas fa-user text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="font-bold text-gray-800">James Chen</p>
+                                <p class="text-xs text-gray-500 mb-1">Lab Manager</p>
+                                <a href="mailto:james.chen@nau.edu" class="text-xs text-nau-blue hover:underline">james.chen@nau.edu</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rate Card -->
+                    <div class="bg-white p-6 rounded-sm shadow-sm border border-gray-200">
+                        <h4 class="font-heading text-lg font-bold text-nau-blue uppercase mb-4">Hourly Rates</h4>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center pb-2 border-b border-gray-100">
+                                <span class="text-sm text-gray-600">Internal (Academic)</span>
+                                <span class="font-bold text-nau-blue">$60/hr</span>
+                            </div>
+                            <div class="flex justify-between items-center pb-2 border-b border-gray-100">
+                                <span class="text-sm text-gray-600">External (Industry)</span>
+                                <span class="font-bold text-nau-blue">$150/hr</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">Staff Assisted</span>
+                                <span class="font-bold text-nau-blue">+$50/hr</span>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-4 italic">* Rates include probe usage.</p>
+                    </div>
+
+                    <!-- Resources Widget -->
+                    <div class="bg-white p-6 rounded-sm shadow-sm border border-gray-200">
+                        <h4 class="font-heading text-lg font-bold text-nau-blue uppercase mb-4">Resources</h4>
+                        <ul class="space-y-3">
+                            <li>
+                                <a href="#" class="flex items-center text-sm text-gray-600 hover:text-nau-blue group">
+                                    <i class="fas fa-file-pdf w-6 text-red-500 group-hover:scale-110 transition-transform"></i>
+                                    B-2 AFM Operation Manual
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="flex items-center text-sm text-gray-600 hover:text-nau-blue group">
+                                    <i class="fas fa-play-circle w-6 text-nau-blue group-hover:scale-110 transition-transform"></i>
+                                    Video: Probe Exchange
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-nau-blue text-white pt-16 pb-8 border-t-8 border-nau-gold mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+                <div>
+                    <h4 class="font-heading font-bold text-lg mb-4 text-nau-gold uppercase tracking-widest">Contact Us</h4>
+                    <p class="mb-2 text-blue-100"><i class="fas fa-map-marker-alt w-6 text-center mr-2 text-nau-gold"></i>Engineering Building 69, Room 102</p>
+                    <p class="mb-2 text-blue-100"><i class="fas fa-university w-6 text-center mr-2 text-nau-gold"></i>Northern Arizona University</p>
+                    <p class="mb-2 text-blue-100"><i class="fas fa-envelope w-6 text-center mr-2 text-nau-gold"></i>semicon.lab@nau.edu</p>
+                    <p class="text-blue-100"><i class="fas fa-phone w-6 text-center mr-2 text-nau-gold"></i>(928) 523-0000</p>
+                </div>
+                <div>
+                    <h4 class="font-heading font-bold text-lg mb-4 text-nau-gold uppercase tracking-widest">Quick Links</h4>
+                    <ul class="space-y-2 text-blue-100 font-medium">
+                        <li><a href="#" class="hover:text-nau-gold transition-colors">College of Engineering</a></li>
+                        <li><a href="#" class="hover:text-nau-gold transition-colors">Department of Applied Physics</a></li>
+                        <li><a href="#" class="hover:text-nau-gold transition-colors">Campus Map</a></li>
+                    </ul>
+                </div>
+                <div class="flex flex-col items-start md:items-end">
+                     <div class="font-heading font-extrabold text-4xl text-white mb-2 tracking-tighter">NAU</div>
+                     <p class="text-sm text-blue-200 text-left md:text-right font-medium">Flagstaff, AZ 86011</p>
+                </div>
+            </div>
+            <div class="border-t border-blue-800 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-blue-300 font-medium">
+                <p>&copy; 2024 Northern Arizona University. All Rights Reserved.</p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-white transition-colors">Accessibility</a>
+                    <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+        btn.addEventListener('click', () => { menu.classList.toggle('hidden'); });
+    </script>
+</body>
+</html>

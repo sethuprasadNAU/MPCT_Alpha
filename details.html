@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keyence VHX-7000 | NAU Metrology</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        nau: {
+                            blue: '#003466',       // Official NAU Blue
+                            darkNav: '#0f172a',    // Dark navy for navbar
+                            gold: '#ffcd00',       // Official NAU Gold
+                            goldHover: '#e6b800',  
+                            green: '#43692d',      // Standard green
+                            deepGreen: '#004e38',  // Dark green for Location section
+                            orange: '#d45d00',     // Orange for Request Info button
+                            offWhite: '#f4f1ed',   
+                            white: '#ffffff',
+                            grayBg: '#f0f4f8'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Barlow', 'sans-serif'],            
+                        heading: ['Barlow Condensed', 'sans-serif'], 
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Scrollbar for tables */
+        .custom-scroll::-webkit-scrollbar {
+            height: 8px;
+        }
+        .custom-scroll::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: #003466; 
+            border-radius: 4px;
+        }
+        
+        /* Sticky Sidebar logic */
+        .sticky-sidebar {
+            position: sticky;
+            top: 20px; 
+        }
+        
+        /* Timeline line */
+        .timeline-line {
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: #e5e7eb;
+            z-index: 0;
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-800 antialiased bg-nau-grayBg flex flex-col min-h-screen">
+
+    <!-- Top Bar -->
+    <div class="bg-nau-blue text-white w-full border-b border-blue-900 hidden md:block">
+        <div class="max-w-[1400px] mx-auto px-4 lg:px-8">
+            <div class="flex justify-between h-[50px] items-center">
+                <div class="flex items-center gap-4">
+                    <a href="index.html" class="flex items-center">
+                        <img src="NAU.png" 
+                             alt="Northern Arizona University" 
+                             class="h-10 w-auto object-contain">
+                    </a>
+                </div>
+
+                <div class="flex items-center gap-6 font-sans text-[15px] font-medium tracking-wide">
+                    <a href="#" class="hover:text-nau-gold transition-colors">Research</a>
+                    <a href="#" class="hover:text-nau-gold transition-colors">Athletics</a>
+                    <a href="#" class="hover:text-nau-gold transition-colors">Alumni</a>
+                    <a href="#" class="hover:text-nau-gold transition-colors">Giving</a>
+                    <div class="flex items-center gap-2 ml-4 text-gray-300">
+                        <i class="fas fa-moon"></i>
+                        <div class="w-10 h-5 bg-blue-400 rounded-full relative cursor-pointer">
+                            <div class="absolute right-1 top-1 w-3 h-3 bg-white rounded-full shadow-md"></div>
+                        </div>
+                        <i class="fas fa-sun text-white"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Navigation -->
+    <nav class="bg-nau-darkNav text-white sticky top-0 z-40 shadow-xl border-b border-gray-800">
+        <div class="max-w-[1400px] mx-auto px-4 lg:px-8">
+            <div class="flex justify-between h-[70px] items-center">
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-8 items-center font-sans text-[17px] font-normal tracking-wide h-full">
+                    <a href="index.html" class="h-full flex items-center border-b-4 border-transparent hover:border-nau-gold hover:text-nau-gold transition-all">
+                        Home
+                    </a>
+                    <a href="index.html#education" class="h-full flex items-center border-b-4 border-transparent hover:border-nau-gold hover:text-nau-gold transition-all">
+                        Get Started
+                    </a>
+                    <a href="scroll.html" class="h-full flex items-center border-b-4 border-nau-gold text-nau-gold transition-all">
+                        Equipments
+                    </a>
+                    <a href="index.html#about" class="h-full flex items-center border-b-4 border-transparent hover:border-nau-gold hover:text-nau-gold transition-all">
+                        About
+                    </a>
+                    <a href="index.html#contact" class="h-full flex items-center border-b-4 border-transparent hover:border-nau-gold hover:text-nau-gold transition-all">
+                        Billing
+                    </a>
+                </div>
+
+                <!-- Desktop Actions -->
+                <div class="hidden md:flex items-center gap-4">
+                    <button class="text-white hover:text-nau-gold transition-colors mr-2">
+                        <i class="fas fa-search text-xl"></i>
+                    </button>
+                    <a href="index.html#contact" class="bg-nau-green hover:bg-green-800 text-white px-5 py-2 rounded-sm font-medium transition-colors text-base shadow-sm">
+                        Contact Lab
+                    </a>
+                    <a href="Booking1.html" class="bg-nau-gold text-nau-darkNav px-5 py-2 rounded-sm font-bold hover:bg-nau-goldHover transition-colors shadow-sm flex items-center gap-2">
+                        Book Equipment <i class="fas fa-arrow-right text-xs"></i>
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-white hover:text-nau-gold focus:outline-none">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-nau-darkNav border-t border-gray-700">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 font-sans text-lg">
+                <a href="index.html" class="block px-3 py-2 rounded-md font-medium hover:bg-gray-800 hover:text-nau-gold text-white">Home</a>
+                <a href="index.html#education" class="block px-3 py-2 rounded-md font-medium hover:bg-gray-800 hover:text-nau-gold text-white">Get Started</a>
+                <a href="scroll.html" class="block px-3 py-2 rounded-md font-medium hover:bg-gray-800 hover:text-nau-gold text-white">Equipments</a>
+                <a href="index.html#about" class="block px-3 py-2 rounded-md font-medium hover:bg-gray-800 hover:text-nau-gold text-white">About</a>
+                <a href="index.html#contact" class="block px-3 py-2 rounded-md font-medium hover:bg-gray-800 hover:text-nau-gold text-white">Billing</a>
+                <a href="Booking1.html" class="block w-full text-left px-3 py-2 rounded-md font-bold bg-nau-gold text-nau-darkNav mt-4">Book Equipment</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header / Hero Area -->
+    <header class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-[1400px] mx-auto px-4 lg:px-8 py-6">
+            <!-- Breadcrumb -->
+            <nav class="flex mb-4 text-xs font-bold text-gray-500 uppercase tracking-wider">
+                <a href="index.html" class="hover:text-nau-blue">Home</a>
+                <span class="mx-2">/</span>
+                <a href="scroll.html" class="hover:text-nau-blue">Equipments</a>
+                <span class="mx-2">/</span>
+                <a href="scroll.html?filter=microscopy" class="hover:text-nau-blue">Microscopy</a>
+                <span class="mx-2">/</span>
+                <span class="text-nau-blue">Keyence VHX-7000</span>
+            </nav>
+
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h1 class="font-heading text-4xl md:text-5xl font-extrabold text-nau-blue uppercase tracking-tight">Keyence VHX-7000</h1>
+                    <p class="text-gray-600 text-lg mt-1">4K Ultra-High Accuracy Digital Microscope</p>
+                </div>
+                <!-- Top Actions -->
+                <div class="flex items-center gap-3">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-800 border border-green-200">
+                        <span class="w-2 h-2 rounded-full bg-green-500 mr-2 animate-pulse"></span>
+                        SYSTEM ONLINE
+                    </span>
+                    <a href="Booking1.html" class="bg-nau-blue text-white px-6 py-2 rounded-sm font-bold hover:bg-nau-gold hover:text-nau-blue transition-colors uppercase text-sm tracking-wide">
+                        Book Now
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Layout -->
+    <main class="flex-grow py-8">
+        <div class="max-w-[1400px] mx-auto px-4 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                
+                <!-- LEFT COLUMN (Content) -->
+                <div class="lg:col-span-8 space-y-8">
+                    
+                    <!-- Hero Image & Overview -->
+                    <section class="bg-white rounded-sm shadow-sm border border-gray-200 overflow-hidden">
+                        <div class="relative h-96 bg-gray-100">
+                            <img src="K7000_lab.jpeg" alt="Keyence VHX-7000" class="w-full h-full object-cover">
+                            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
+                                <p class="text-white font-medium text-sm"><i class="fas fa-camera mr-2"></i> Standard Setup in Room 102</p>
+                            </div>
+                        </div>
+                        <div class="p-8">
+                            <h2 class="font-heading text-2xl font-bold text-nau-blue uppercase mb-4 border-l-4 border-nau-gold pl-3">Instrument Overview</h2>
+                            <p class="text-gray-700 leading-relaxed mb-6">
+                                The Keyence VHX-7000 is our flagship optical metrology system, bridging the gap between traditional optical microscopy and SEM (Scanning Electron Microscopy). It utilizes a 4K CMOS sensor and advanced lighting algorithms to capture fully-focused images of uneven surfaces instantly.
+                            </p>
+                            <p class="text-gray-700 leading-relaxed">
+                                Ideal for: <strong>Wafer inspection, MEMS device characterization, Failure analysis, and Roughness measurements.</strong>
+                            </p>
+                            
+                            <!-- Capabilities Icons -->
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8 pt-8 border-t border-gray-100">
+                                <div class="text-center">
+                                    <div class="w-12 h-12 bg-blue-50 text-nau-blue rounded-full flex items-center justify-center mx-auto mb-2 text-xl">
+                                        <i class="fas fa-expand"></i>
+                                    </div>
+                                    <span class="block text-xs font-bold uppercase text-gray-500">6000x Zoom</span>
+                                </div>
+                                <div class="text-center">
+                                    <div class="w-12 h-12 bg-blue-50 text-nau-blue rounded-full flex items-center justify-center mx-auto mb-2 text-xl">
+                                        <i class="fas fa-layer-group"></i>
+                                    </div>
+                                    <span class="block text-xs font-bold uppercase text-gray-500">Z-Stacking</span>
+                                </div>
+                                <div class="text-center">
+                                    <div class="w-12 h-12 bg-blue-50 text-nau-blue rounded-full flex items-center justify-center mx-auto mb-2 text-xl">
+                                        <i class="fas fa-cube"></i>
+                                    </div>
+                                    <span class="block text-xs font-bold uppercase text-gray-500">3D Profiling</span>
+                                </div>
+                                <div class="text-center">
+                                    <div class="w-12 h-12 bg-blue-50 text-nau-blue rounded-full flex items-center justify-center mx-auto mb-2 text-xl">
+                                        <i class="fas fa-ruler-combined"></i>
+                                    </div>
+                                    <span class="block text-xs font-bold uppercase text-gray-500">Auto Measure</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Sample Gallery (What it can do) -->
+                    <section>
+                        <h2 class="font-heading text-2xl font-bold text-nau-blue uppercase mb-4 flex items-center">
+                            <i class="fas fa-images mr-2 text-gray-400"></i> Sample Gallery
+                        </h2>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="group relative rounded-sm overflow-hidden shadow-sm h-48 cursor-pointer">
+                                <img src="Sample_1.jpeg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                                <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                                    <span class="text-white text-xs font-bold uppercase">PCB Solder Joint</span>
+                                </div>
+                            </div>
+                            <div class="group relative rounded-sm overflow-hidden shadow-sm h-48 cursor-pointer">
+                                <img src="Sample_2.avif" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                                <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                                    <span class="text-white text-xs font-bold uppercase">Silicon Etch Profile</span>
+                                </div>
+                            </div>
+                            <div class="group relative rounded-sm overflow-hidden shadow-sm h-48 cursor-pointer">
+                                <img src="Sample_3.avif" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                                <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                                    <span class="text-white text-xs font-bold uppercase">MEMS Structure (3D)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Technical Specifications Table -->
+                    <section class="bg-white rounded-sm shadow-sm border border-gray-200">
+                        <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+                            <h3 class="font-heading text-lg font-bold text-nau-blue uppercase">Technical Specifications</h3>
+                        </div>
+                        <div class="p-0 overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <tbody class="bg-white divide-y divide-gray-200 text-sm">
+                                    <tr>
+                                        <td class="px-6 py-3 font-bold text-nau-blue w-1/3 bg-gray-50">Sensor</td>
+                                        <td class="px-6 py-3 text-gray-700">1/1.8-inch CMOS image sensor</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-3 font-bold text-nau-blue w-1/3 bg-gray-50">Effective Pixels</td>
+                                        <td class="px-6 py-3 text-gray-700">3840 (H) x 2160 (V)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-3 font-bold text-nau-blue w-1/3 bg-gray-50">Frame Rate</td>
+                                        <td class="px-6 py-3 text-gray-700">50 fps (max)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-3 font-bold text-nau-blue w-1/3 bg-gray-50">Illumination</td>
+                                        <td class="px-6 py-3 text-gray-700">High-intensity LED (Ring, Coaxial, Mixed)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-3 font-bold text-nau-blue w-1/3 bg-gray-50">Stage</td>
+                                        <td class="px-6 py-3 text-gray-700">Motorized XYZ with 100mm x 100mm travel</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-3 font-bold text-nau-blue w-1/3 bg-gray-50">Data Output</td>
+                                        <td class="px-6 py-3 text-gray-700">.JPEG, .TIFF, .CSV (Measurement data)</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <!-- Rate Card -->
+                    <section>
+                        <h2 class="font-heading text-2xl font-bold text-nau-blue uppercase mb-4">Usage Rates</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-white border border-gray-200 p-6 rounded-sm shadow-sm border-t-4 border-t-nau-blue text-center">
+                                <h4 class="font-bold text-gray-500 uppercase tracking-widest text-xs mb-2">Academic / Internal</h4>
+                                <p class="text-4xl font-extrabold text-nau-blue mb-1">$45<span class="text-lg font-normal text-gray-400">/hr</span></p>
+                                <p class="text-xs text-gray-400">Unassisted Use</p>
+                            </div>
+                            <div class="bg-white border border-gray-200 p-6 rounded-sm shadow-sm border-t-4 border-t-nau-gold text-center">
+                                <h4 class="font-bold text-gray-500 uppercase tracking-widest text-xs mb-2">External / Industry</h4>
+                                <p class="text-4xl font-extrabold text-nau-blue mb-1">$120<span class="text-lg font-normal text-gray-400">/hr</span></p>
+                                <p class="text-xs text-gray-400">Staff Assisted: +$50/hr</p>
+                            </div>
+                        </div>
+                    </section>
+
+                </div>
+
+                <!-- RIGHT COLUMN (Sticky Sidebar) -->
+                <div class="lg:col-span-4 space-y-6">
+                    
+                    <!-- Primary Action Card -->
+                    <div class="bg-white p-6 rounded-sm shadow-lg border-t-4 border-nau-gold sticky-sidebar z-10">
+                        <h3 class="font-heading text-xl font-bold text-nau-blue uppercase mb-4">Start using this tool</h3>
+                        
+                        <!-- Training Timeline -->
+                        <div class="relative pl-8 space-y-6 mb-6">
+                            <div class="timeline-line"></div>
+                            
+                            <div class="relative z-10">
+                                <div class="absolute -left-8 bg-green-500 rounded-full w-4 h-4 border-2 border-white mt-1"></div>
+                                <h4 class="text-xs font-bold uppercase text-gray-500">Step 1: Online</h4>
+                                <a href="#" class="text-nau-blue font-bold text-sm hover:underline">Complete Canvas Module</a>
+                            </div>
+                            
+                            <div class="relative z-10">
+                                <div class="absolute -left-8 bg-gray-300 rounded-full w-4 h-4 border-2 border-white mt-1"></div>
+                                <h4 class="text-xs font-bold uppercase text-gray-500">Step 2: Hands-On</h4>
+                                <p class="text-sm text-gray-700">Schedule training session (1hr)</p>
+                            </div>
+
+                            <div class="relative z-10">
+                                <div class="absolute -left-8 bg-gray-300 rounded-full w-4 h-4 border-2 border-white mt-1"></div>
+                                <h4 class="text-xs font-bold uppercase text-gray-500">Step 3: Access</h4>
+                                <p class="text-sm text-gray-700">Book tool independently</p>
+                            </div>
+                        </div>
+
+                        <a href="Booking1.html" class="block w-full bg-nau-blue text-white text-center py-3 rounded-sm font-bold uppercase hover:bg-nau-gold hover:text-nau-blue transition-colors mb-3">
+                            Reserve Tool
+                        </a>
+                        <button class="block w-full border border-gray-300 text-gray-600 text-center py-3 rounded-sm font-bold uppercase hover:bg-gray-50 transition-colors text-xs">
+                            Request Training
+                        </button>
+                    </div>
+
+                    <!-- Contact Card -->
+                    <div class="bg-white p-6 rounded-sm shadow-sm border border-gray-200">
+                        <h4 class="font-heading text-lg font-bold text-nau-blue uppercase mb-4">Tool Owner</h4>
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full bg-gray-200 overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=100&q=80" class="w-full h-full object-cover">
+                            </div>
+                            <div>
+                                <p class="font-bold text-gray-800">Dr. Sarah Miller</p>
+                                <a href="mailto:sarah.miller@nau.edu" class="text-xs text-nau-blue hover:underline">sarah.miller@nau.edu</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Resources Widget -->
+                    <div class="bg-white p-6 rounded-sm shadow-sm border border-gray-200">
+                        <h4 class="font-heading text-lg font-bold text-nau-blue uppercase mb-4">Resources</h4>
+                        <ul class="space-y-3">
+                            <li>
+                                <a href="#" class="flex items-center text-sm text-gray-600 hover:text-nau-blue group">
+                                    <i class="fas fa-file-pdf w-6 text-red-500 group-hover:scale-110 transition-transform"></i>
+                                    Standard Operating Procedure (SOP)
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="flex items-center text-sm text-gray-600 hover:text-nau-blue group">
+                                    <i class="fas fa-file-alt w-6 text-orange-500 group-hover:scale-110 transition-transform"></i>
+                                    Safety Data Sheet (Cleaning)
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="flex items-center text-sm text-gray-600 hover:text-nau-blue group">
+                                    <i class="fas fa-play-circle w-6 text-nau-blue group-hover:scale-110 transition-transform"></i>
+                                    Video Tutorial: Z-Stacking
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Location Widget -->
+                    <div class="bg-nau-offWhite p-6 rounded-sm border border-gray-200">
+                        <div class="flex items-start gap-3">
+                            <i class="fas fa-map-marker-alt text-nau-blue mt-1"></i>
+                            <div>
+                                <p class="font-bold text-sm text-nau-blue">Engineering Building 69</p>
+                                <p class="text-xs text-gray-600">Room 102, Bay 1 (Metrology)</p>
+                                <a href="#" class="text-xs text-nau-gold font-bold hover:underline mt-1 inline-block">View on Map</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-nau-blue text-white pt-16 pb-8 border-t-8 border-nau-gold mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+                <div>
+                    <h4 class="font-heading font-bold text-lg mb-4 text-nau-gold uppercase tracking-widest">Contact Us</h4>
+                    <p class="mb-2 text-blue-100"><i class="fas fa-map-marker-alt w-6 text-center mr-2 text-nau-gold"></i>Engineering Building 69, Room 102</p>
+                    <p class="mb-2 text-blue-100"><i class="fas fa-university w-6 text-center mr-2 text-nau-gold"></i>Northern Arizona University</p>
+                    <p class="mb-2 text-blue-100"><i class="fas fa-envelope w-6 text-center mr-2 text-nau-gold"></i>semicon.lab@nau.edu</p>
+                    <p class="text-blue-100"><i class="fas fa-phone w-6 text-center mr-2 text-nau-gold"></i>(928) 523-0000</p>
+                </div>
+
+                <div>
+                    <h4 class="font-heading font-bold text-lg mb-4 text-nau-gold uppercase tracking-widest">Quick Links</h4>
+                    <ul class="space-y-2 text-blue-100 font-medium">
+                        <li><a href="#" class="hover:text-nau-gold transition-colors">College of Engineering</a></li>
+                        <li><a href="#" class="hover:text-nau-gold transition-colors">Department of Applied Physics</a></li>
+                        <li><a href="#" class="hover:text-nau-gold transition-colors">Campus Map</a></li>
+                        <li><a href="#" class="hover:text-nau-gold transition-colors">Lab Safety Protocols</a></li>
+                    </ul>
+                </div>
+
+                <div class="flex flex-col items-start md:items-end">
+                     <div class="font-heading font-extrabold text-4xl text-white mb-2 tracking-tighter">NAU</div>
+                     <p class="text-sm text-blue-200 text-left md:text-right font-medium">
+                         Northern Arizona University<br>
+                         Flagstaff, AZ 86011
+                     </p>
+                     <div class="mt-6 flex space-x-4">
+                         <a href="#" class="text-white hover:text-nau-gold transition-colors"><i class="fab fa-facebook-f text-xl"></i></a>
+                         <a href="#" class="text-white hover:text-nau-gold transition-colors"><i class="fab fa-twitter text-xl"></i></a>
+                         <a href="#" class="text-white hover:text-nau-gold transition-colors"><i class="fab fa-linkedin-in text-xl"></i></a>
+                         <a href="#" class="text-white hover:text-nau-gold transition-colors"><i class="fab fa-instagram text-xl"></i></a>
+                     </div>
+                </div>
+            </div>
+
+            <div class="border-t border-blue-800 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-blue-300 font-medium">
+                <p>&copy; 2024 Northern Arizona University. All Rights Reserved.</p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-white transition-colors">Accessibility</a>
+                    <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>
